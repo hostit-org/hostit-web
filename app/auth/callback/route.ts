@@ -19,6 +19,9 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}${redirectTo}`);
   }
 
-  // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  // Try to get the original page from referrer or default to home
+  const referrer = request.headers.get("referer");
+  const fallbackUrl = referrer && referrer.includes(origin) ? referrer : `${origin}/`;
+
+  return NextResponse.redirect(fallbackUrl);
 }
