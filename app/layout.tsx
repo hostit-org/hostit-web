@@ -6,6 +6,7 @@ import AuthWrapper from "@/components/auth/auth-wrapper";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Link from "next/link";
 import "./globals.css";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           </AuthWrapper>
         </ThemeProvider>
         <GoogleOneTap />
+        <SpeedInsights />
       </body>
     </html>
   );
