@@ -7,6 +7,7 @@ import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import Link from "next/link";
 import "./globals.css";
 
@@ -45,6 +46,7 @@ export default function RootLayout({
         </ThemeProvider>
         <GoogleOneTap />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
