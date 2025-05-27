@@ -7,7 +7,7 @@ import { ChevronRight } from "lucide-react";
 export default function Breadcrumb() {
   const pathname = usePathname();
   
-  // 경로를 세그먼트로 분할
+  // Split path into segments
   const segments = pathname.split('/').filter(Boolean);
   
   if (segments.length === 0) return null;
@@ -24,7 +24,7 @@ export default function Breadcrumb() {
           </Link>
         </li>
         {segments.map((segment, index) => {
-          // 현재 세그먼트까지의 URL 생성
+          // Generate URL up to current segment
           const href = `/${segments.slice(0, index + 1).join('/')}`;
           const isLast = index === segments.length - 1;
           
