@@ -24,7 +24,7 @@ export function AuthProvider({
   const supabase = createClient();
 
   useEffect(() => {
-    // 클라이언트에서 인증 상태 변화 감지
+    // Detect authentication state changes on client
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {

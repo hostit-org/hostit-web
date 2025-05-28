@@ -7,14 +7,14 @@ import { cn } from "@/lib/utils";
 export function NavItems() {
   const pathname = usePathname();
   
-  // 현재 경로에 따른 활성 탭 결정
+  // Determine active tab based on current path
   const isActive = (path: string) => {
     if (path === "/" && pathname === "/") return true;
     if (path !== "/" && pathname.startsWith(path)) return true;
     return false;
   };
   
-  // 네비게이션 항목 (docs 기반)
+  // Navigation items (docs-based)
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Chat", path: "/chat" },

@@ -4,24 +4,24 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col gap-16 items-center text-center">
+    <div className="flex flex-col gap-8 md:gap-16 items-center text-center px-4">
       {/* Main Hero Section */}
-      <div className="flex flex-col gap-8 items-center max-w-4xl">
+      <div className="flex flex-col gap-6 md:gap-8 items-center max-w-4xl">
         <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-full text-sm text-muted-foreground border">
           <Zap className="w-4 h-4" />
           <span>AI Tool Ecosystem's GitHub</span>
         </div>
         
-        <h1 className="text-4xl lg:text-6xl font-bold !leading-tight text-foreground">
+        <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold !leading-tight text-foreground">
           Anyone can easily use and share AI tools
         </h1>
         
-        <p className="text-xl lg:text-2xl text-muted-foreground max-w-3xl">
+        <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl">
           The universal platform for AI tools. Whether you're a developer or just getting started, 
           discover, use, and share powerful AI tools in our open source ecosystem.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 mt-8">
+        <div className="flex flex-col sm:flex-row gap-4 mt-6 md:mt-8">
           <Button size="lg" className="text-lg px-8 py-6" asChild>
             <Link href="/chat">
             Get Started
@@ -37,7 +37,7 @@ export default function Hero() {
       </div>
 
       {/* Feature Cards */}
-      <div className="grid md:grid-cols-3 gap-8 w-full max-w-5xl mt-16">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-5xl mt-8 md:mt-16">
         <div className="flex flex-col items-center gap-4 p-6 rounded-lg border bg-card">
           <div className="p-3 rounded-full bg-muted">
             <Users className="w-6 h-6 text-foreground" />

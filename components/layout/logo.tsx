@@ -18,7 +18,7 @@ export function Logo({ className = "", size = 32 }: LogoProps) {
   }, []);
 
   if (!mounted) {
-    // 로딩 중에는 기본 로고 표시
+    // Show default logo during loading
     return (
       <div className={`relative ${className}`} style={{ width: size, height: size }}>
         <Image
