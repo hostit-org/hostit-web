@@ -13,9 +13,10 @@ export interface UseChatOptions {
   api?: string;
   onError?: (error: Error) => void;
   onFinish?: (message: Message) => void;
+  onResponse?: (content: string) => void;
 }
 
-export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions = {}) {
+export function useChat({ api = '/api/chat', onError, onFinish, onResponse }: UseChatOptions = {}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +26,7 @@ export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions
     setInput(e.target.value);
   }, []);
 
-  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>, sessionId?: string) => {
     e.preventDefault();
     
     console.log('=== CHAT SUBMIT ===');
@@ -43,6 +44,8 @@ export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions
 
     console.log('User message:', userMessage);
 
+    // Update messages with user message
+    const currentMessages = messages;
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -61,7 +64,8 @@ export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions
       abortControllerRef.current = new AbortController();
       
       const requestBody = {
-        messages: [...messages, userMessage],
+        messages: [...currentMessages, userMessage],
+        ...(sessionId && { sessionId })
       };
       
       console.log('Sending request to:', api);
@@ -100,15 +104,15 @@ export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions
         const { done, value } = await reader.read();
         
         if (done) {
-          console.log('Stream ended');
+          console.log('Stream ended with accumulated content:', accumulatedContent);
           break;
         }
 
         const chunk = decoder.decode(value, { stream: true });
-        console.log('Raw chunk received:', chunk);
+        console.log('Raw chunk received (length:', chunk.length, '):', chunk.substring(0, 100));
         
-        // The response is coming as plain text, not Vercel AI SDK format
-        // Just accumulate the text directly
+        // Simple approach: just accumulate the text
+        // The server is sending plain text, not SSE or JSON
         accumulatedContent += chunk;
         
         // Update the assistant message with accumulated content
@@ -125,6 +129,11 @@ export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions
           }
           return newMessages;
         });
+        
+        // Call onResponse callback if provided
+        if (onResponse) {
+          onResponse(accumulatedContent);
+        }
       }
 
       // Call onFinish if provided
@@ -161,7 +170,7 @@ export function useChat({ api = '/api/chat', onError, onFinish }: UseChatOptions
       setIsLoading(false);
       abortControllerRef.current = null;
     }
-  }, [input, isLoading, messages, api, onError, onFinish]);
+  }, [input, isLoading, messages, api, onError, onFinish, onResponse]);
 
   const stop = useCallback(() => {
     if (abortControllerRef.current) {
